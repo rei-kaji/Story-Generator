@@ -19,18 +19,29 @@ import {
 } from "@mui/material";
 
 import Link from "next/link.js";
+import axios from "axios";
 
-// const hostUrl = "https://ai-image-generator-8u1r.onrender.com";
 const hostUrl = "https://story-generator.onrender.com";
 
-const genres = ["Science Fiction", "Horror"];
+const genres = [
+  "Romance",
+  "Adventure",
+  "Fantasy",
+  "Suspense",
+  "Mystery",
+  "SF",
+  "Horror",
+];
 
 const index = () => {
-  const [title, setTitle] = useState();
-  const [genre, setGenre] = useState();
-  const [keyWord, setKeyWord] = useState();
+  const [title, setTitle] = useState("");
+  const [genre, setGenre] = useState("");
+  const [keyWord, setKeyWord] = useState("");
   const [generateStory, setGenerateStory] = useState(
     "Generated story will be here."
+  );
+  const [coverImage, setCoverImage] = useState(
+    "https://images.unsplash.com/photo-1525220964737-6c299398493c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
   );
   const [generating, setGenerating] = useState(false);
 
@@ -76,6 +87,31 @@ const index = () => {
     } else {
       alert("Please all of input.");
     }
+  };
+
+  const handleShareStory = (e) => {
+    e.preventDefault();
+    if (!title || !genre || !keyWord || !generateStory || !coverImage) {
+      alert("Please fill all inputs");
+      return;
+    }
+
+    let data = {
+      title: title,
+      genre: genre,
+      keyword: keyWord,
+      story: generateStory,
+      image: coverImage,
+    };
+    axios
+      .post(`${hostUrl}/api/story/upload`, data)
+      .then((res) => {
+        console.log(res);
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -213,7 +249,9 @@ const index = () => {
               )}
             </Box>
           )}
-          <Button variant="contained">Share your story</Button>
+          <Button variant="contained" onClick={handleShareStory}>
+            Share your story
+          </Button>
         </Stack>
       </Container>
     </>

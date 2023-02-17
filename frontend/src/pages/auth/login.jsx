@@ -45,9 +45,6 @@ const Login = () => {
       .post(`${hostUrl}/api/auth/login`, data)
       .then((data) => {
         const { token } = data.data;
-        // console.log("token", token);
-        // alert(`token: ${token}`);
-        // we need to save the token to localstorage
         localStorage.setItem("token", token);
         // we will redirect to the home page
         router.push("/");

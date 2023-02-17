@@ -2,6 +2,7 @@ import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
+import Select from "react-select";
 // @mui
 import {
   Link,
@@ -13,26 +14,93 @@ import {
   Container,
   Divider,
   Typography,
+  MenuItem,
+  ImageList,
+  ImageListItem,
+  RadioGroup,
+  Box,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
+import axios from "axios";
 // components
 // import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
+const hostUrl = "https://story-generator.onrender.com";
+const avatarOption = [];
+for (let i = 1; i < 22; i++) {
+  let avatarImage = require(`../../assets/images/avatars/avatar_${i}.jpg`);
+  avatarOption.push({ name: `Avatar ${i}`, url: avatarImage });
+}
+
 const loginImage = require("../../assets/illustration_login.png");
+
+const avatarOptionComp = (item) => (
+  <Box>
+    <Image
+      src={item.default.src}
+      alt={item}
+      width={40}
+      height={40}
+      referrerPolicy="no-referrer"
+    />
+  </Box>
+);
 
 const Register = () => {
   // const navigate = useNavigate();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [userPassword, setUserPassword] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userFullName, setUserFullName] = useState("");
+  const [avatar, setAvatar] = useState("");
 
-  const handleClick = () => {
-    // navigate("/dashboard", { replace: true });
-    router.push("/");
+  // console.log("avatar", avatar);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (!userEmail || !userFullName || !userPassword) {
+      alert("Please fill all inputs");
+      return;
+    }
+
+    let data = {
+      fullName: userFullName,
+      email: userEmail,
+      password: userPassword,
+      avatar: avatar,
+    };
+    axios
+      .post(`${hostUrl}/api/auth/register`, data)
+      .then((res) => {
+        console.log(res);
+        router.push("auth/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
+  // const handleChangeAvatar = (e) => {
+  //   e.preventDefault;
+  //   setAvatar(e.target.value);
+  // };
+
+  const handleUserFullName = (e) => {
+    e.preventDefault();
+    setUserFullName(e.target.value);
+  };
+  const handleUserEmail = (e) => {
+    e.preventDefault();
+    setUserEmail(e.target.value);
+  };
+  const handleUserPassword = (e) => {
+    e.preventDefault();
+    setUserPassword(e.target.value);
+  };
   return (
     <Container
       sx={{
@@ -60,12 +128,20 @@ const Register = () => {
           Let's start your story journey!
         </Typography>
         <Stack spacing={3} mb={2}>
-          <TextField name="name" label="Your full name" />
-          <TextField name="email" label="Email address" />
-
+          <TextField
+            name="name"
+            label="Your full name"
+            onChange={handleUserFullName}
+          />
+          <TextField
+            name="email"
+            label="Email address"
+            onChange={handleUserEmail}
+          />
           <TextField
             name="password"
             label="Password"
+            onChange={handleUserPassword}
             type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (
