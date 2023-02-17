@@ -48,12 +48,15 @@ const index = () => {
   const [generating, setGenerating] = useState(false);
 
   const handleChangeTitle = (e) => {
+    e.preventDefault();
     setTitle(e.target.value);
   };
   const handleChangeKeyWord = (e) => {
+    e.preventDefault();
     setKeyWord(e.target.value);
   };
   const handleChangeGenre = (e) => {
+    e.preventDefault();
     setGenre(e.target.value);
   };
 

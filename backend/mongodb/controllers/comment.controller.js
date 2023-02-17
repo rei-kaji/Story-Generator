@@ -1,7 +1,7 @@
 import Comment from "../models/comment.models.js";
 
 export const getComments = async (req, res, next) => {
-  const storyId = req.body.storyId;
+  const storyId = req.header("uid");
   try {
     let comments = await Comment.find({ story: storyId });
 

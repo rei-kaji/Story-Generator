@@ -25,6 +25,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import axios from "axios";
+import { redirects } from "next.config";
 const hostUrl = "https://story-generator.onrender.com";
 
 const index = ({ post }) => {
@@ -32,16 +33,16 @@ const index = ({ post }) => {
 
   const avatar = require("../../../assets/images/avatars/avatar_1.jpg");
   // const idD = router.query.id;
-  console.log("router.query", router.query);
+  // console.log("router.query", router.query);
   const { _id, title, genre, image, keyword, story, createdAt, user } =
     router.query;
   const [userComments, setUserComments] = useState([]);
   const [inputComment, setInputComment] = useState();
   const [authorName, setAuthorName] = useState("");
   const [authorImage, setAuthorImage] = useState(avatar.default.src);
-  // const storyId = router.query._id;
+  const storyId = router.query._id;
   // console.log("storyId", storyId);
-  console.log("authorImage", authorImage);
+  // console.log("authorImage", authorImage);
 
   const getAuthorInfo = () => {
     let token = localStorage.getItem("token");
@@ -65,27 +66,57 @@ const index = ({ post }) => {
     // console.log("token", token);
     let data = { storyId: _id };
     axios
-      .get(`${hostUrl}/api/comment/comments`, data)
+      .get(`${hostUrl}/api/comment/comments`, {
+        headers: {
+          uid: `${storyId}`,
+        },
+      })
       .then((res) => {
         console.log("res", res.data.comments);
         setUserComments(res.data.comments);
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Something error happened at getComments", err);
       });
   };
 
   useEffect(() => {
     getAuthorInfo();
     getComments();
-  }, []);
+  }, [storyId]);
 
   const handleChangeComment = (e) => {
     e.preventDefault();
     setInputComment(e.target.value);
   };
 
-  const handleSubmitComment = () => {};
+  const handleSubmitComment = (e) => {
+    e.preventDefault();
+    if (!inputComment) {
+      alert("Please fill all inputs");
+      return;
+    }
+
+    let token = localStorage.getItem("token");
+    let data = {
+      comment: inputComment,
+      story: storyId,
+    };
+    axios
+      .post(`${hostUrl}/api/comment/submit-comment`, data, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        setInputComment("");
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <Container
@@ -137,7 +168,6 @@ const index = ({ post }) => {
           type="text"
           id=""
           label="Your comment"
-          value={""}
           onChange={handleChangeComment}
           fullWidth
         />
@@ -148,7 +178,7 @@ const index = ({ post }) => {
             marginTop: "2rem",
           }}
         >
-          <Button variant="outlined" onClick={handleSubmitComment}>
+          <Button variant="contained" onClick={handleSubmitComment}>
             Submit your comment
           </Button>
         </Box>

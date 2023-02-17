@@ -14,7 +14,6 @@ import {
   // ThemeProvider,
 } from "@mui/material";
 import logo from "../assets/logo.png";
-import icon from "../assets/icon.png";
 import Image from "next/image";
 import AdbIcon from "@mui/icons-material/Adb";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -23,6 +22,10 @@ import { red } from "@mui/material/colors";
 import muiTheme from "../styles/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
 
+// TODO:Change to get avatar image from userID or DB
+let icon = require("../assets/images/avatars/avatar_10.jpg");
+icon = icon.default.src;
+console.log(icon);
 const pages = ["Home", "Generator"];
 const pageLinkes = { Home: "/", StoryGenerator: "/storygenerator" };
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -155,7 +158,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Avator" src={icon} />
+                <Avatar alt="Avatar" src={icon} />
               </IconButton>
             </Tooltip>
             <Menu

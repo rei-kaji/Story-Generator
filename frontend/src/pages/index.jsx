@@ -13,9 +13,11 @@ import Link from "next/link.js";
 import AddIcon from "@mui/icons-material/Add";
 import Head from "next/head.js";
 import axios from "axios";
+import { useRouter } from "next/router.js";
 const hostUrl = "https://story-generator.onrender.com";
 
 const Home = () => {
+  const router = useRouter();
   const [stories, setStories] = useState([]);
   const SORT_OPTIONS = [
     { value: "latest", label: "Latest" },
@@ -33,9 +35,14 @@ const Home = () => {
       })
       .then((res) => {
         // console.log("res", res.data.stories);
+        if (!res.data.stories) {
+          alert("You have to login first!");
+          router.push("/auth/login");
+        }
         setStories(res.data.stories);
       })
       .catch((err) => {
+        router.push("/auth/login");
         console.log(err);
       });
   };
@@ -83,7 +90,7 @@ const Home = () => {
 
         <Grid container spacing={3}>
           {stories.map((post, index) => (
-            <StoryPostCard key={post.id} post={post} index={index} />
+            <StoryPostCard key={post._id} post={post} index={index} />
           ))}
         </Grid>
       </Container>
