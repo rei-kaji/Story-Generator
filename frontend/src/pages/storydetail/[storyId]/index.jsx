@@ -31,7 +31,8 @@ const hostUrl = "https://story-generator.onrender.com";
 const index = ({ post }) => {
   const router = useRouter();
 
-  const avatar = require("../../../assets/images/avatars/avatar_1.jpg");
+  let avatar = require("../../../assets/images/avatars/avatar_1.jpg");
+  avatar = avatar.default.src;
   // const idD = router.query.id;
   // console.log("router.query", router.query);
   const { _id, title, genre, image, keyword, story, createdAt, user } =
@@ -39,7 +40,7 @@ const index = ({ post }) => {
   const [userComments, setUserComments] = useState([]);
   const [inputComment, setInputComment] = useState();
   const [authorName, setAuthorName] = useState("");
-  const [authorImage, setAuthorImage] = useState(avatar.default.src);
+  const [authorImage, setAuthorImage] = useState(avatar);
   const storyId = router.query._id;
   // console.log("storyId", storyId);
   // console.log("authorImage", authorImage);
@@ -65,40 +66,40 @@ const index = ({ post }) => {
     let token = localStorage.getItem("token");
     // console.log("token", token);
     let data = { storyId: _id };
-    // axios
-    //   .get(`${hostUrl}/api/comment/comments`, {
-    //     headers: {
-    //       "Access-Control-Expose-Headers": "uid",
-    //       uid: `${storyId}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log("res", res.data.comments);
-    //     setUserComments(res.data.comments);
-    //   })
-    //   .catch((err) => {
-    //     console.log("Something error happened at getComments", err);
-    //   });
-    try {
-      const response = await fetch(
-        // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
-        `${hostUrl}/api/comment/comments`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Expose-Headers": "uid",
-            uid: `${storyId}`,
-          },
-        }
-      );
+    axios
+      .get(`${hostUrl}/api/comment/comments`, {
+        headers: {
+          "Access-Control-Expose-Headers": "uid",
+          uid: `${storyId}`,
+        },
+      })
+      .then((res) => {
+        console.log("res", res.data.comments);
+        setUserComments(res.data.comments);
+      })
+      .catch((err) => {
+        console.log("Something error happened at getComments", err);
+      });
+    // try {
+    //   const response = await fetch(
+    //     // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
+    //     `${hostUrl}/api/comment/comments`,
+    //     {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         "Access-Control-Expose-Headers": "uid",
+    //         uid: `${storyId}`,
+    //       },
+    //     }
+    //   );
 
-      const respppp = await response.json();
-      console.log("respppp", respppp);
-      // const { generatedStory } = await response.json();
-    } catch (error) {
-      console.log("error", error);
-    }
+    //   const respppp = await response.json();
+    //   console.log("respppp", respppp);
+    //   // const { generatedStory } = await response.json();
+    // } catch (error) {
+    //   console.log("error", error);
+    // }
   };
 
   useEffect(() => {
@@ -211,13 +212,30 @@ const index = ({ post }) => {
                 <Avatar alt="Remy Sharp" src={avatar} />
               </Grid>
               <Grid justifyContent="left" item xs zeroMinWidth>
-                <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
-                {userComments.map((comment) => (
-                  <p style={{ textAlign: "left" }}>{comment}</p>
-                ))}
-                <p style={{ textAlign: "left", color: "gray" }}>
-                  posted 1 minute ago
-                </p>
+                <h4
+                  style={{
+                    marginBottom: "1rem",
+                    marginTop: 0,
+                    textAlign: "left",
+                  }}
+                >
+                  Michel Michel
+                </h4>
+                {userComments.length == 0 ? (
+                  <p style={{ textAlign: "left" }}>
+                    "This story is very interesting! What a great brain the AI
+                    having!"
+                  </p>
+                ) : (
+                  <>
+                    {userComments.map((comment) => (
+                      <p style={{ textAlign: "left" }}>{comment}</p>
+                    ))}
+                    <p style={{ textAlign: "left", color: "gray" }}>
+                      posted 1 minute ago
+                    </p>
+                  </>
+                )}
               </Grid>
             </Grid>
           </Paper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react"; // @mui
+import React, { useEffect, useState } from "react"; // @mui
 import {
   Grid,
   Button,
@@ -21,8 +21,19 @@ import {
 import Link from "next/link.js";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import ClickableImage from "@/components/ClickableImage";
 
 const hostUrl = "https://story-generator.onrender.com";
+let previewImage = require("../../assets/images/preview.png");
+previewImage = previewImage.default.src;
+
+let imageButton = {
+  url: previewImage,
+  title: "Click and Generate Image",
+  width: "20rem",
+  height: "20rem",
+};
 
 const genres = [
   "Romance",
@@ -42,10 +53,14 @@ const index = () => {
   const [generateStory, setGenerateStory] = useState(
     "Generated story will be here."
   );
+  const [generatingImg, setGeneratingImg] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState("");
+  // console.log("generatedImage", generatedImage);
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1525220964737-6c299398493c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
   );
   const [generating, setGenerating] = useState(false);
+  let imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
 
   const handleChangeTitle = (e) => {
     e.preventDefault();
@@ -60,9 +75,16 @@ const index = () => {
     setGenre(e.target.value);
   };
 
+  // useEffect(() => {
+  //   imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
+  // }, [genre, title, keyWord]);
+
   const generatingStory = async (event) => {
     if (title && genre && keyWord) {
       event.preventDefault();
+      console.log("title", title);
+      imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
+      console.log("imagePrompt", imagePrompt);
       try {
         setGenerating(true);
         const response = await fetch(
@@ -148,10 +170,15 @@ const index = () => {
         </Typography>
         <Stack
           direction="column"
-          alignItems="left"
-          justifyContent="space-between"
-          mb={5}
-          gap={5}
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          // direction="column"
+          // alignItems="left"
+          // justifyContent="space-between"
+          // mb={5}
+          // gap={5}
+          // flex={1}
         >
           <Box
             sx={{
@@ -208,7 +235,11 @@ const index = () => {
               </Select>
             </FormControl>
           </Box>
-          <Button variant="outlined" onClick={generatingStory}>
+          <Button
+            variant="outlined"
+            onClick={generatingStory}
+            sx={{ width: "100%" }}
+          >
             Run Story Generator
           </Button>
           {generating ? (
@@ -260,11 +291,46 @@ const index = () => {
               )}
             </Box>
           )}
-          <Button variant="contained" onClick={handleShareStory}>
-            Share your story
-          </Button>
+          <Box
+            sx={{
+              // borderRadius: "5px",
+              // border: "1px solid lightgray",
+              minWidth: "auto",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {coverImage ? (
+              <ClickableImage
+                image={imageButton}
+                setGeneratingImg={setGeneratingImg}
+                setGeneratedImage={setGeneratedImage}
+                imagePrompt={imagePrompt}
+              />
+            ) : (
+              <Image
+                src={previewImage}
+                alt="preview"
+                width="250"
+                height="250"
+                className="w-9/12 h-9/12 origin-contain"
+              />
+            )}
+
+            {generatingImg && (
+              <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
+                {/* <Loader /> */}
+                <p>Generating</p>
+              </div>
+            )}
+          </Box>
         </Stack>
       </Container>
+      <Stack alignItems="center" justifyContent="space-between">
+        <Button variant="contained" onClick={handleShareStory}>
+          Share your story
+        </Button>
+      </Stack>
     </>
   );
 };
