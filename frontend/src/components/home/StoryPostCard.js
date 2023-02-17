@@ -24,7 +24,7 @@ import {
 // import Iconify from "../iconify.jsx";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import Image from "next/image";
 
 const avatarInfo = require("../../assets/images/avatars/avatar_1.jpg");
@@ -82,17 +82,39 @@ StoryPostCard.propTypes = {
   index: PropTypes.number,
 };
 
-const query = {
-  id: 1,
-  name: "yakkun",
-};
+// const query = {
+//   id: 1,
+//   name: "yakkun",
+// };
 
 export default function StoryPostCard({ post, index }) {
   const router = useRouter();
   const postedData = post;
-  const { id, title, genre, image, keyword, story } = post;
+  const { id, title, genre, image, keyword, story, createdAt, user } = post;
+  // const [commentCount, setCommentCount] = useState({ id: 0, count: 0 });
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
+
+  // const getCommentCount = () => {
+  //   let token = localStorage.getItem("token");
+  //   axios
+  //     .get(`${hostUrl}/api/story/stories`, {
+  //       headers: {
+  //         Authorization: `${token}`,
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log("res", res.data.stories);
+  //       setStories(res.data.stories);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getCommentCount();
+  // }, []);
 
   const handleShowDetail = () => {
     console.log("post", post);
@@ -157,7 +179,7 @@ export default function StoryPostCard({ post, index }) {
             }}
           /> */}
           <StyledAvatar
-            alt={author.name}
+            alt={title}
             // src=
             src={avatar}
             sx={{
@@ -171,7 +193,7 @@ export default function StoryPostCard({ post, index }) {
             }}
           />
 
-          <StyledCover alt={title} src={avatar} />
+          <StyledCover alt={title} src={image} />
         </StyledCardMedia>
 
         <CardContent
@@ -240,7 +262,7 @@ export default function StoryPostCard({ post, index }) {
               <ChatOutlinedIcon sx={{ width: 20, height: 20, mr: 0.5 }} />
               <Typography variant="caption">
                 {/* {fShortenNumber(info.number)} */}
-                {commentCount}
+                {/* {commentCount} */}
               </Typography>
             </Box>
           </StyledInfo>

@@ -16,7 +16,7 @@ import axios from "axios";
 const hostUrl = "https://story-generator.onrender.com";
 
 const Home = () => {
-  const [stories, setStories] = useState();
+  const [stories, setStories] = useState([]);
   const SORT_OPTIONS = [
     { value: "latest", label: "Latest" },
     { value: "popular", label: "Popular" },
@@ -32,7 +32,7 @@ const Home = () => {
         },
       })
       .then((res) => {
-        console.log("res", res.data.stories);
+        // console.log("res", res.data.stories);
         setStories(res.data.stories);
       })
       .catch((err) => {

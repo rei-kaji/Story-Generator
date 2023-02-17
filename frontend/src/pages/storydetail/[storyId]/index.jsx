@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 // @mui
 import {
@@ -24,28 +24,61 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
+import axios from "axios";
+const hostUrl = "https://story-generator.onrender.com";
 
 const index = ({ post }) => {
   const router = useRouter();
 
-  // const idD = router.query.id;
-  let {
-    id,
-    cover,
-    title,
-    genre = "SF",
-    comment,
-    commentCount,
-    keyWord = "Sord",
-    generateStory = "Hellooo",
-    author = "Rei Kaji",
-    createdAt,
-  } = router.query;
-  const [inputComment, setInputComment] = useState();
   const avatar = require("../../../assets/images/avatars/avatar_1.jpg");
-  // const [genre, setGenre] = useState();
-  // const [keyWord, setKeyWord] = useState();
-  author = "Rei Kaji";
+  // const idD = router.query.id;
+  console.log("router.query", router.query);
+  const { _id, title, genre, image, keyword, story, createdAt, user } =
+    router.query;
+  const [userComments, setUserComments] = useState([]);
+  const [inputComment, setInputComment] = useState();
+  const [authorName, setAuthorName] = useState("");
+  const [authorImage, setAuthorImage] = useState(avatar.default.src);
+  // const storyId = router.query._id;
+  // console.log("storyId", storyId);
+  console.log("authorImage", authorImage);
+
+  const getAuthorInfo = () => {
+    let token = localStorage.getItem("token");
+    axios
+      .get(`${hostUrl}/me`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((res) => {
+        // console.log("res", res.data.user.fullName);
+        setAuthorName(res.data.user.fullName);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getComments = () => {
+    let token = localStorage.getItem("token");
+    // console.log("token", token);
+    let data = { storyId: _id };
+    axios
+      .get(`${hostUrl}/api/comment/comments`, data)
+      .then((res) => {
+        console.log("res", res.data.comments);
+        setUserComments(res.data.comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getAuthorInfo();
+    getComments();
+  }, []);
 
   const handleChangeComment = (e) => {
     e.preventDefault();
@@ -78,8 +111,8 @@ const index = ({ post }) => {
           <Box sx={{ display: "flex", justifyContent: "right" }}>
             <Chip
               sx={{ maxWidth: "25%" }}
-              avatar={<Avatar alt="Rei" src="/static/images/avatar/1.jpg" />}
-              label={author}
+              avatar={<Avatar alt="Rei" src={authorImage} />}
+              label={authorName}
               variant="outlined"
             />
           </Box>
@@ -90,12 +123,12 @@ const index = ({ post }) => {
             component="img"
             alt="green iguana"
             sx={{ maxHeight: "100%" }}
-            image={cover}
+            image={image}
           />
           <CardContent padding="1rem">
             <Chip label={genre} sx={{ mb: 2 }} />
             <Typography variant="body2" color="text.secondary">
-              {generateStory}
+              {story}
             </Typography>
           </CardContent>
         </Card>
@@ -128,17 +161,9 @@ const index = ({ post }) => {
               </Grid>
               <Grid justifyContent="left" item xs zeroMinWidth>
                 <h4 style={{ margin: 0, textAlign: "left" }}>Michel Michel</h4>
-                <p style={{ textAlign: "left" }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Aenean luctus ut est sed faucibus. Duis bibendum ac ex
-                  vehicula laoreet. Suspendisse congue vulputate lobortis.
-                  Pellentesque at interdum tortor. Quisque arcu quam, malesuada
-                  vel mauris et, posuere sagittis ipsum. Aliquam ultricies a
-                  ligula nec faucibus. In elit metus, efficitur lobortis nisi
-                  quis, molestie porttitor metus. Pellentesque et neque risus.
-                  Aliquam vulputate, mauris vitae tincidunt interdum, mauris mi
-                  vehicula urna, nec feugiat quam lectus vitae ex.{" "}
-                </p>
+                {userComments.map((comment) => (
+                  <p style={{ textAlign: "left" }}>{comment}</p>
+                ))}
                 <p style={{ textAlign: "left", color: "gray" }}>
                   posted 1 minute ago
                 </p>
