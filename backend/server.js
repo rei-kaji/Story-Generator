@@ -3,6 +3,10 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./mongodb/connect.js";
 import openAIRoutes from "./routes/openAI.route.js";
+import commentRoutes from "./routes/comment.route.js";
+import storyRoutes from "./routes/story.route.js";
+import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
 // import postRoutes from "./routes/postRoutes.js";
 
 dotenv.config();
@@ -17,10 +21,14 @@ app.use(express.json({ limit: "50mb" }));
 
 // app.use("/api/post", postRoutes);
 app.use("/api/generate-story", openAIRoutes);
+app.use("/api/comment", commentRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/story", storyRoutes);
+app.use("/", userRoutes);
 
-app.get("/", async (req, res) => {
-  res.send("Hello Beautiful World!");
-});
+// app.get("/", async (req, res) => {
+//   res.send("Hello Beautiful World!");
+// });
 
 const startServer = async () => {
   try {
