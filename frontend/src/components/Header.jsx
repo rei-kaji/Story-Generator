@@ -105,11 +105,13 @@ function Header() {
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">
-                    {page}=="Home"?(
-                    <NextLink href={pageLinkes.Home}>{page}</NextLink>
-                    ):(
-                    <NextLink href={pageLinkes.StoryGenerator}>{page}</NextLink>
-                    )
+                    {page == "Home" ? (
+                      <NextLink href={pageLinkes.Home}>{page}</NextLink>
+                    ) : (
+                      <NextLink href={pageLinkes.StoryGenerator}>
+                        {page}
+                      </NextLink>
+                    )}
                   </Typography>
                 </MenuItem>
               ))}

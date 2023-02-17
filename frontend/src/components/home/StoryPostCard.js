@@ -1,4 +1,7 @@
 import PropTypes from "prop-types";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+
 // @mui
 import { alpha, styled } from "@mui/material/styles";
 import {
@@ -9,13 +12,25 @@ import {
   Avatar,
   Typography,
   CardContent,
+  Checkbox,
+  Rating,
+  Button,
 } from "@mui/material";
 // utils
 // import { fDate } from "../../utils/formatTime";
 // import { fShortenNumber } from "../../utils/formatNumber";
 //
-import SvgColor from "../svg-color";
-import Iconify from "../iconify.jsx";
+// import SvgColor from "../svg-color";
+// import Iconify from "../iconify.jsx";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import { useState } from "react";
+// import Image from "next/image";
+
+const avatarInfo = require("../../assets/images/avatars/avatar_1.jpg");
+const avatarInfo2 = avatarInfo.default;
+const avatar = avatarInfo2.src;
+// console.log("avatar", avatar);
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +45,9 @@ const StyledTitle = styled(Link)({
   WebkitLineClamp: 2,
   display: "-webkit-box",
   WebkitBoxOrient: "vertical",
+  cursor: "pointer",
+  color: "#00695c",
+  fontSize: "1rem",
 });
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
@@ -64,16 +82,41 @@ StoryPostCard.propTypes = {
   index: PropTypes.number,
 };
 
+const query = {
+  id: 1,
+  name: "yakkun",
+};
+
 export default function StoryPostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+  const router = useRouter();
+  const postedData = post;
+  const {
+    id,
+    cover,
+    title,
+    view,
+    comment,
+    commentCount,
+    share,
+    author,
+    createdAt,
+  } = post;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 
-  const POST_INFO = [
-    { number: comment, icon: "eva:message-circle-fill" },
-    { number: view, icon: "eva:eye-fill" },
-    { number: share, icon: "eva:share-fill" },
-  ];
+  const handleShowDetail = () => {
+    console.log("post", post);
+    router.push({
+      pathname: `/storydetail/${id}`,
+      query: postedData,
+    });
+  };
+
+  // const POST_INFO = [
+  //   { number: 200, icon: "eva:message-circle-fill" },
+  //   // { number: view, icon: "eva:eye-fill" },
+  //   // { number: share, icon: "eva:share-fill" },
+  // ];
 
   return (
     <Grid
@@ -93,7 +136,8 @@ export default function StoryPostCard({ post, index }) {
                 width: "100%",
                 height: "100%",
                 position: "absolute",
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.grey[500], 0.52),
               },
             }),
             ...(latestPostLarge && {
@@ -104,9 +148,14 @@ export default function StoryPostCard({ post, index }) {
             }),
           }}
         >
-          <SvgColor
+          {/* <SvgColor
             color="paper"
-            src="/assets/icons/shape-avatar.svg"
+            src="../../assets/icons/shape-avatar.svg"
+            // width={80}
+            // height={36}
+            // zIndex={9}
+            // bottom={-15}
+            // position={"absolute"}
             sx={{
               width: 80,
               height: 36,
@@ -116,10 +165,11 @@ export default function StoryPostCard({ post, index }) {
               color: "background.paper",
               ...((latestPostLarge || latestPost) && { display: "none" }),
             }}
-          />
+          /> */}
           <StyledAvatar
             alt={author.name}
-            src={author.avatarUrl}
+            // src=
+            src={avatar}
             sx={{
               ...((latestPostLarge || latestPost) && {
                 zIndex: 9,
@@ -131,7 +181,7 @@ export default function StoryPostCard({ post, index }) {
             }}
           />
 
-          <StyledCover alt={title} src={cover} />
+          <StyledCover alt={title} src={avatar} />
         </StyledCardMedia>
 
         <CardContent
@@ -145,11 +195,12 @@ export default function StoryPostCard({ post, index }) {
           }}
         >
           <Typography
-            gutterBottom
+            // gutterBottom
+
             variant="caption"
             sx={{ color: "text.disabled", display: "block" }}
           >
-            {/* {fDate(createdAt)} */}
+            {createdAt}
           </Typography>
 
           <StyledTitle
@@ -162,32 +213,46 @@ export default function StoryPostCard({ post, index }) {
                 color: "common.white",
               }),
             }}
+            onClick={handleShowDetail}
           >
+            {/* <NextLink href={`/storydetail/${id}`}>{title}</NextLink> */}
+            {/* <Button onClick={handleShowDetail}>{title}</Button> */}
             {title}
+
+            {/* <NextLink
+              as={`storydetail`}
+              href={{ pathname: `/storydetail/${id}`, query: postedData }}
+            >
+              <p>Secondへ遷移する</p>
+            </NextLink> */}
           </StyledTitle>
 
           <StyledInfo>
-            {POST_INFO.map((info, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  ml: index === 0 ? 0 : 1.5,
-                  ...((latestPostLarge || latestPost) && {
-                    color: "grey.500",
-                  }),
-                }}
-              >
-                <Iconify
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                // ml: index === 0 ? 0 : 1.5,
+                ...((latestPostLarge || latestPost) && {
+                  color: "grey.500",
+                }),
+              }}
+            >
+              {/* <Iconify
                   icon={info.icon}
                   sx={{ width: 16, height: 16, mr: 0.5 }}
-                />
-                <Typography variant="caption">
-                  {/* {fShortenNumber(info.number)} */}
-                </Typography>
-              </Box>
-            ))}
+                /> */}
+              {/* <Checkbox
+                  icon={<FavoriteBorder />}
+                  checkedIcon={<Favorite />}
+                  sx={{ width: 16, height: 16, mr: 0.5 }}
+                /> */}
+              <ChatOutlinedIcon sx={{ width: 20, height: 20, mr: 0.5 }} />
+              <Typography variant="caption">
+                {/* {fShortenNumber(info.number)} */}
+                {commentCount}
+              </Typography>
+            </Box>
           </StyledInfo>
         </CardContent>
       </Card>

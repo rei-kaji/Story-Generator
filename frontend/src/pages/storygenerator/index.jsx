@@ -13,12 +13,15 @@ import {
   Select,
   MenuItem,
   InputBase,
+  Chip,
+  CircularProgress,
+  LinearProgress,
 } from "@mui/material";
 
 import Link from "next/link.js";
 
 // const hostUrl = "https://ai-image-generator-8u1r.onrender.com";
-const hostUrl = "localhost:8080";
+const hostUrl = "https://story-generator.onrender.com";
 
 const genres = ["Science Fiction", "Horror"];
 
@@ -26,8 +29,8 @@ const index = () => {
   const [title, setTitle] = useState();
   const [genre, setGenre] = useState();
   const [keyWord, setKeyWord] = useState();
-  const [generatedStory, setGeneratedStory] = useState(
-    "Generated story will write down here."
+  const [generateStory, setGenerateStory] = useState(
+    "Generated story will be here."
   );
   const [generating, setGenerating] = useState(false);
 
@@ -41,32 +44,37 @@ const index = () => {
     setGenre(e.target.value);
   };
 
-  const generateStory = async (event) => {
-    event.preventDefault();
-    try {
-      setGenerating(true);
-      const response = await fetch(
-        // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
-        `${hostUrl}/api/generate-story`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title: title,
-            keyword: keyWord,
-            genre: genre,
-          }),
-        }
-      );
-      const { generatedFromOpenAI } = await response.json();
-      setGeneratedStory(generatedFromOpenAI);
-      console.log("generatedStory", generatedStory);
-    } catch (err) {
-      alert(err);
-    } finally {
-      setGenerating(false);
+  const generatingStory = async (event) => {
+    if (title && genre && keyWord) {
+      event.preventDefault();
+      try {
+        setGenerating(true);
+        const response = await fetch(
+          // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
+          `${hostUrl}/api/generate-story`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              title: title,
+              keyword: keyWord,
+              genre: genre,
+            }),
+          }
+        );
+        const { generatedStory } = await response.json();
+        console.log("generatedStory", generatedStory);
+        setGenerateStory(generatedStory);
+        console.log("generatedStory", generatedStory);
+      } catch (err) {
+        alert(err);
+      } finally {
+        setGenerating(false);
+      }
+    } else {
+      alert("Please all of input.");
     }
   };
 
@@ -119,9 +127,6 @@ const index = () => {
               // height: "5rem",
             }}
           >
-            {/* <Typography variant="h6" color="initial">
-              Key Word
-            </Typography> */}
             <TextField
               fullWidth
               label="Key Word"
@@ -156,25 +161,53 @@ const index = () => {
               </Select>
             </FormControl>
           </Box>
-          <Button variant="outlined" onClick={generateStory}>
+          <Button variant="outlined" onClick={generatingStory}>
             Run Story Generator
           </Button>
           {generating ? (
-            <Typography>Generating</Typography>
+            <Box sx={{ width: "100%" }}>
+              <LinearProgress color="secondary" />
+            </Box>
           ) : (
             <Box
               sx={{
                 width: "100%",
               }}
             >
-              <TextField
-                fullWidth
-                label="Generated Story"
-                id="story"
-                aria-readonly
-                value={generatedStory}
-                disabled
-              />
+              {generateStory.length < 50 ? (
+                <Typography style={{ color: "#00695c" }}>
+                  {generateStory}
+                </Typography>
+              ) : (
+                <Grid
+                  justifyContent="left"
+                  item
+                  xs
+                  zeroMinWidth
+                  border={"1px solid lightgray"}
+                  borderRadius={"5px"}
+                  padding={"1.5rem"}
+                >
+                  <Typography variant="h4" style={{ textAlign: "left" }}>
+                    {title}
+                  </Typography>
+                  <Chip label={genre} sx={{ mb: 3, mt: 3 }} />
+                  <Typography variant="body1" style={{ textAlign: "left" }}>
+                    {generateStory}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    style={{
+                      textAlign: "left",
+                      color: "gray",
+                      display: "flex",
+                      justifyContent: "right",
+                    }}
+                  >
+                    {generateStory.length} / 1200
+                  </Typography>
+                </Grid>
+              )}
             </Box>
           )}
           <Button variant="contained">Share your story</Button>
