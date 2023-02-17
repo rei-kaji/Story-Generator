@@ -14,7 +14,13 @@ dotenv.config();
 const app = express();
 const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "uid",
+    "access-control-expose-headers",
+  ],
+  exposedHeaders: ["access-control-expose-headers"],
 };
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
