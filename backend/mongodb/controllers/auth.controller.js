@@ -48,7 +48,7 @@ export const login = async (req, res) => {
 };
 
 export const register = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, avatar } = req.body;
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -64,7 +64,7 @@ export const register = async (req, res) => {
       fullName: fullName,
       email: email,
       password: hashedPassword,
-      avatar: user.avatar,
+      avatar: avatar,
     });
 
     const result = await user.save();
@@ -76,7 +76,7 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      message: "Something went wrong!",
+      message: "Something went wrong at register!",
       error,
     });
   }
