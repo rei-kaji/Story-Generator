@@ -12,11 +12,12 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-router.route("/").get((req, res) => {
-  res.send("Hello Generator");
-});
+// router.route("/").get((req, res) => {
+//   res.send("Hello Generator");
+// });
 
-router.route("/").post(async (req, res) => {
+// router.route("/").post(async (req, res) => {
+export const generateStory = async (req, res) => {
   try {
     const { title, keyword, genre } = req.body;
     const prompt = `Please create a new story with the following conditions. The story should be a work of fiction, no more than 1,200 words in length, and must have a clear beginning, middle, and end. The title and theme is ${title}. The genre should be ${genre}, and the story should include the key words "${keyword}". Please keep the language natural and avoid technical terms. Thank you!`;
@@ -42,6 +43,6 @@ router.route("/").post(async (req, res) => {
       .status(500)
       .send(error?.response.data.error.message || "Something went wrong");
   }
-});
+};
 
 export default router;

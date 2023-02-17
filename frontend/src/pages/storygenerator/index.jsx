@@ -166,7 +166,10 @@ const index = () => {
           </Button>
           {generating ? (
             <Box sx={{ width: "100%" }}>
-              <LinearProgress color="secondary" />
+              <LinearProgress color="secondary" />{" "}
+              <Typography style={{ color: "red", mt: "1.5rem" }}>
+                * Sometimes it is necessary to wait a few minutes...
+              </Typography>
             </Box>
           ) : (
             <Box
