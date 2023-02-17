@@ -1,4 +1,4 @@
-import React from "react"; // @mui
+import React, { useEffect, useState } from "react"; // @mui
 import { Grid, Button, Container, Stack, Typography, Fab } from "@mui/material";
 // components
 import Iconify from "../components/iconify.jsx";
@@ -12,13 +12,38 @@ import POSTS from "../components/home/blog.js";
 import Link from "next/link.js";
 import AddIcon from "@mui/icons-material/Add";
 import Head from "next/head.js";
+import axios from "axios";
+const hostUrl = "https://story-generator.onrender.com";
 
 const Home = () => {
+  const [stories, setStories] = useState();
   const SORT_OPTIONS = [
     { value: "latest", label: "Latest" },
     { value: "popular", label: "Popular" },
     { value: "oldest", label: "Oldest" },
   ];
+
+  const getAllStories = () => {
+    let token = localStorage.getItem("token");
+    axios
+      .get(`${hostUrl}/api/story/stories`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((res) => {
+        console.log("res", res.data.stories);
+        setStories(res.data.stories);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getAllStories();
+  }, []);
+
   return (
     <>
       <Head>
@@ -57,7 +82,7 @@ const Home = () => {
         </Stack>
 
         <Grid container spacing={3}>
-          {POSTS.map((post, index) => (
+          {stories.map((post, index) => (
             <StoryPostCard key={post.id} post={post} index={index} />
           ))}
         </Grid>

@@ -1,8 +1,9 @@
 import Comment from "../models/comment.models.js";
 
 export const getComments = async (req, res, next) => {
+  const storyId = req.body.storyId;
   try {
-    let comments = await Comment.find();
+    let comments = await Comment.find({ story: storyId });
 
     res.status(200).json({
       status: "success",

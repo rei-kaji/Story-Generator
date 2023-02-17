@@ -27,7 +27,7 @@ import CardMedia from "@mui/material/CardMedia";
 
 const index = ({ post }) => {
   const router = useRouter();
-  console.log("router.query", router.query);
+
   // const idD = router.query.id;
   let {
     id,
@@ -46,40 +46,6 @@ const index = ({ post }) => {
   // const [genre, setGenre] = useState();
   // const [keyWord, setKeyWord] = useState();
   author = "Rei Kaji";
-
-  const generatingStory = async (event) => {
-    if (title && genre && keyWord) {
-      event.preventDefault();
-      try {
-        setGenerating(true);
-        const response = await fetch(
-          // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
-          `${hostUrl}/api/generate-story`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              title: title,
-              keyword: keyWord,
-              genre: genre,
-            }),
-          }
-        );
-        const { generatedStory } = await response.json();
-        console.log("generatedStory", generatedStory);
-        setGenerateStory(generatedStory);
-        console.log("generatedStory", generatedStory);
-      } catch (err) {
-        alert(err);
-      } finally {
-        setGenerating(false);
-      }
-    } else {
-      alert("Please all of input.");
-    }
-  };
 
   const handleChangeComment = (e) => {
     e.preventDefault();

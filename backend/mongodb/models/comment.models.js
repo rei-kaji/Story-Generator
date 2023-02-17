@@ -1,16 +1,19 @@
 import mongoose from "mongoose";
 
-const commentSchema = mongoose.Schema({
-  comment: String,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+const commentSchema = mongoose.Schema(
+  {
+    comment: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    story: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Story",
+    },
   },
-  story: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Story",
-  },
-});
+  { timestamps: true }
+);
 
 const Comment = mongoose.model("Comment", commentSchema);
 

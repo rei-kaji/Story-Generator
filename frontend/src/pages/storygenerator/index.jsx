@@ -20,6 +20,7 @@ import {
 
 import Link from "next/link.js";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const hostUrl = "https://story-generator.onrender.com";
 
@@ -34,6 +35,7 @@ const genres = [
 ];
 
 const index = () => {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
   const [keyWord, setKeyWord] = useState("");
@@ -96,6 +98,8 @@ const index = () => {
       return;
     }
 
+    let token = localStorage.getItem("token");
+    console.log(token);
     let data = {
       title: title,
       genre: genre,
@@ -104,7 +108,11 @@ const index = () => {
       image: coverImage,
     };
     axios
-      .post(`${hostUrl}/api/story/upload`, data)
+      .post(`${hostUrl}/api/story/upload`, data, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then((res) => {
         console.log(res);
         router.push("/");
