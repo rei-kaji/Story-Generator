@@ -90,17 +90,7 @@ const query = {
 export default function StoryPostCard({ post, index }) {
   const router = useRouter();
   const postedData = post;
-  const {
-    id,
-    cover,
-    title,
-    view,
-    comment,
-    commentCount,
-    share,
-    author,
-    createdAt,
-  } = post;
+  const { id, title, genre, image, keyword, story } = post;
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 
