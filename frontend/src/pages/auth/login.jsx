@@ -16,23 +16,55 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
+import axios from "axios";
 // components
 // import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
 const loginImage = require("../../assets/illustration_login.png");
+const hostUrl = "https://story-generator.onrender.com";
 
 const Login = () => {
   // const navigate = useNavigate();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const [userPassword, setUserPassword] = useState("");
+  const [userEmail, setUserEmail] = useState("");
 
-  const handleClick = () => {
-    // navigate("/dashboard", { replace: true });
-    router.push("/");
+  const handleClick = (e) => {
+    e.preventDefault();
+    let data = {
+      email: userEmail,
+      password: userPassword,
+    };
+    // console.log("data", data);
+    // alert(`date: ${data.email}`);
+
+    axios
+      .post(`${hostUrl}/api/auth/login`, data)
+      .then((data) => {
+        const { token } = data.data;
+        // console.log("token", token);
+        // alert(`token: ${token}`);
+        // we need to save the token to localstorage
+        localStorage.setItem("token", token);
+        // we will redirect to the home page
+        router.push("/");
+      })
+      .catch((err) => {
+        console.log("Something error happened at login. ", err);
+      });
   };
 
+  const handleUserEmail = (e) => {
+    e.preventDefault();
+    setUserEmail(e.target.value);
+  };
+  const handleUserPassword = (e) => {
+    e.preventDefault();
+    setUserPassword(e.target.value);
+  };
   return (
     <Container
       sx={{
@@ -60,11 +92,16 @@ const Login = () => {
           Enjoy your story journey!
         </Typography>
         <Stack spacing={3} mb={2}>
-          <TextField name="email" label="Email address" />
+          <TextField
+            name="email"
+            label="Email address"
+            onChange={handleUserEmail}
+          />
 
           <TextField
             name="password"
             label="Password"
+            onChange={handleUserPassword}
             type={showPassword ? "text" : "password"}
             InputProps={{
               endAdornment: (

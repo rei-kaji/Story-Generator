@@ -1,5 +1,5 @@
 import express from "express";
-// import auth from "../middleware/auth.middleware.js";
+import auth from "../middleware/auth.middleware.js";
 import {
   getComments,
   submitComment,
@@ -9,7 +9,7 @@ const router = express.Router();
 
 // router.get("/me", auth, getMe);
 // router.put("/update", auth, updateInformation);
-router.get("/comments", getComments);
-router.post("/submit-comment", submitComment);
+router.get("/comments", auth, getComments);
+router.post("/submit-comment", auth, submitComment);
 
 export default router;
