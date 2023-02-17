@@ -4,10 +4,9 @@ import User from "../models/user.model.js";
 
 export const getMe = async (req, res, next) => {
   const id = req.user;
-  console.log("id", id);
 
   try {
-    let user = await User.findById(id).populate("agencies");
+    let user = await User.findById(id);
 
     res.status(200).json({
       status: "success",
