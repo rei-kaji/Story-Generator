@@ -176,7 +176,7 @@ const index = () => {
           />
           <CardContent padding="1rem">
             <Chip label={storyInfo.genre} sx={{ mb: 2 }} />
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="subtitle1" color="text.secondary">
               {storyInfo.story}
             </Typography>
           </CardContent>

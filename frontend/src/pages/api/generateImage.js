@@ -6,8 +6,8 @@ const generateImage = async ({
 }) => {
   console.log("Start generateImage", imagePrompt);
 
+  setGeneratingImg(true);
   try {
-    setGeneratingImg(true);
     const response = await fetch(
       `${hostUrl}/api/generate-story/generate-image`,
       {
@@ -27,7 +27,7 @@ const generateImage = async ({
     alert(err);
     setGeneratingImg(false);
   } finally {
-    setGeneratingImg(true);
+    setGeneratingImg(false);
   }
 };
 
