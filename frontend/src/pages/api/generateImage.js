@@ -1,11 +1,13 @@
-const generateImage = async ({ setGeneratedImage, hostUrl, imagePrompt }) => {
+const generateImage = async ({
+  setGeneratedImage,
+  setGeneratingImg,
+  hostUrl,
+  imagePrompt,
+}) => {
   console.log("Start generateImage", imagePrompt);
-  if (!imagePrompt) {
-    alert("Please input!");
-    return;
-  }
 
   try {
+    setGeneratingImg(true);
     const response = await fetch(
       `${hostUrl}/api/generate-story/generate-image`,
       {
@@ -23,6 +25,9 @@ const generateImage = async ({ setGeneratedImage, hostUrl, imagePrompt }) => {
     setGeneratedImage(`data:image/jpeg;base64,${data.photo}`);
   } catch (err) {
     alert(err);
+    setGeneratingImg(false);
+  } finally {
+    setGeneratingImg(true);
   }
 };
 

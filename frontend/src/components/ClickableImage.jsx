@@ -7,6 +7,7 @@ import NextImage from "next/image";
 import PhotoSizeSelectActualOutlinedIcon from "@mui/icons-material/PhotoSizeSelectActualOutlined";
 import generateImage from "../pages/api/generateImage.js";
 const hostUrl = "https://story-generator.onrender.com";
+import Loader from "@/components/Loader";
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
@@ -72,18 +73,24 @@ const ImageMarked = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-const ClickableImage = ({
-  image,
-  setGeneratingImg,
-  setGeneratedImage,
-  imagePrompt,
-}) => {
-  const generatingImage = (e) => {
+const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
+  const [generatingImg, setGeneratingImg] = React.useState(false);
+  const startGenerateImage = (e) => {
     e.preventDefault();
+    if (!imagePrompt) {
+      alert("Please input!");
+      return;
+    }
     console.log("Clicked generatingImage. imagePrompt: ", imagePrompt);
     try {
-      setGeneratingImg(true);
-      generateImage({ setGeneratedImage, hostUrl, imagePrompt });
+      // setGeneratingImg(true);
+      // console.log(generatingImg);
+      generateImage({
+        setGeneratedImage,
+        setGeneratingImg,
+        hostUrl,
+        imagePrompt,
+      });
     } catch (error) {
       console.log(error);
       setGeneratingImg(false);
@@ -100,47 +107,53 @@ const ClickableImage = ({
         width: "100%",
       }}
     >
-      <ImageButton
-        focusRipple
-        key={image.title}
-        style={{
-          width: image.width,
-          height: image.height,
-        }}
-        onClick={generatingImage}
-      >
-        <PhotoSizeSelectActualOutlinedIcon
-          sx={{
-            position: "center",
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: "10rem",
-            height: "10rem",
-            backgroundSize: "cover",
-            backgroundPosition: "center 40%",
-            opacity: "0.3",
-          }}
-        />
-        <ImageBackdrop className="MuiImageBackdrop-root" />
-        <Image>
-          <Typography
-            component="span"
-            variant="h6"
-            color="#00695c"
-            sx={{
-              position: "relative",
-              p: 4,
-              pt: 2,
-              pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+      <>
+        {generatingImg ? (
+          <Loader />
+        ) : (
+          <ImageButton
+            focusRipple
+            key={image.title}
+            style={{
+              width: image.width,
+              height: image.height,
             }}
+            onClick={startGenerateImage}
           >
-            {image.title}
-            <ImageMarked className="MuiImageMarked-root" />
-          </Typography>
-        </Image>
-      </ImageButton>
+            <PhotoSizeSelectActualOutlinedIcon
+              sx={{
+                position: "center",
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+                width: "10rem",
+                height: "10rem",
+                backgroundSize: "cover",
+                backgroundPosition: "center 40%",
+                opacity: "0.3",
+              }}
+            />
+            <ImageBackdrop className="MuiImageBackdrop-root" />
+            <Image>
+              <Typography
+                component="span"
+                variant="h6"
+                color="#00695c"
+                sx={{
+                  position: "relative",
+                  p: 4,
+                  pt: 2,
+                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                }}
+              >
+                {image.title}
+                <ImageMarked className="MuiImageMarked-root" />
+              </Typography>
+            </Image>
+          </ImageButton>
+        )}
+      </>
     </Box>
   );
 };

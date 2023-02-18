@@ -44,7 +44,7 @@ const genres = [
   "SF",
   "Horror",
 ];
-
+let imagePrompt;
 const index = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -53,14 +53,12 @@ const index = () => {
   const [generateStory, setGenerateStory] = useState(
     "Generated story will be here."
   );
-  const [generatingImg, setGeneratingImg] = useState(false);
   const [generatedImage, setGeneratedImage] = useState("");
   // console.log("generatedImage", generatedImage);
   const [coverImage, setCoverImage] = useState(
     "https://images.unsplash.com/photo-1525220964737-6c299398493c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
   );
   const [generating, setGenerating] = useState(false);
-  let imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
 
   const handleChangeTitle = (e) => {
     e.preventDefault();
@@ -75,16 +73,16 @@ const index = () => {
     setGenre(e.target.value);
   };
 
-  // useEffect(() => {
-  //   imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
-  // }, [genre, title, keyWord]);
+  useEffect(() => {
+    imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
+  }, [genre, title, keyWord]);
 
   const generatingStory = async (event) => {
     if (title && genre && keyWord) {
       event.preventDefault();
-      console.log("title", title);
+      // console.log("title", title);
       imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
-      console.log("imagePrompt", imagePrompt);
+      // console.log("imagePrompt", imagePrompt);
       try {
         setGenerating(true);
         const response = await fetch(
@@ -102,10 +100,10 @@ const index = () => {
             }),
           }
         );
-        const { generatedStory } = await response.json();
-        console.log("generatedStory", generatedStory);
-        setGenerateStory(generatedStory);
-        console.log("generatedStory", generatedStory);
+        const { getGeneratedStory } = await response.json();
+        // console.log("generatedStory", generatedStory);
+        setGenerateStory(getGeneratedStory);
+        // console.log("generatedStory", generatedStory);
       } catch (err) {
         alert(err);
       } finally {
@@ -118,7 +116,7 @@ const index = () => {
 
   const handleShareStory = (e) => {
     e.preventDefault();
-    if (!title || !genre || !keyWord || !generateStory || !coverImage) {
+    if (!title || !genre || !keyWord || !generateStory || !generatedImage) {
       alert("Please fill all inputs");
       return;
     }
@@ -130,7 +128,7 @@ const index = () => {
       genre: genre,
       keyword: keyWord,
       story: generateStory,
-      image: coverImage,
+      image: generatedImage,
     };
     axios
       .post(`${hostUrl}/api/story/upload`, data, {
@@ -300,29 +298,24 @@ const index = () => {
               alignItems: "center",
             }}
           >
-            {coverImage ? (
-              <ClickableImage
-                image={imageButton}
-                setGeneratingImg={setGeneratingImg}
-                setGeneratedImage={setGeneratedImage}
-                imagePrompt={imagePrompt}
-              />
-            ) : (
-              <Image
-                src={previewImage}
-                alt="preview"
-                width="250"
-                height="250"
-                className="w-9/12 h-9/12 origin-contain"
-              />
-            )}
-
-            {generatingImg && (
-              <div className="absolute inset-0 z-0 flex justify-center items-center bg-[rgba(0,0,0,0.5)] rounded-lg">
-                {/* <Loader /> */}
-                <p>Generating</p>
-              </div>
-            )}
+            <>
+              {generatedImage.length < 5 ? (
+                <ClickableImage
+                  image={imageButton}
+                  // setGeneratingImg={setGeneratingImg}
+                  setGeneratedImage={setGeneratedImage}
+                  imagePrompt={imagePrompt}
+                />
+              ) : (
+                <Image
+                  src={generatedImage}
+                  alt="preview"
+                  width="500"
+                  height="500"
+                  className="w-9/12 h-9/12 origin-contain"
+                />
+              )}
+            </>
           </Box>
         </Stack>
       </Container>
