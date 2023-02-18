@@ -18,6 +18,8 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import axios from "axios";
+import getComments from "../../api/getComments.js";
+import getAuthorInfo from "../../api/getAuthorInfo.js";
 const hostUrl = "https://story-generator.onrender.com";
 
 const index = () => {
@@ -42,66 +44,13 @@ const index = () => {
   const [authorImage, setAuthorImage] = useState(avatar);
   const storyId = storyInfo._id;
 
-  const getAuthorInfo = () => {
-    let token = localStorage.getItem("token");
-    axios
-      .get(`${hostUrl}/me`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((res) => {
-        setAuthorName(res.data.user.fullName);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  // TODO:Create getComments function
-  const getComments = async () => {
-    // let token = localStorage.getItem("token");
-    // // console.log("token", token);
-    // let data = { storyId: _id };
-    // axios
-    //   .get(`${hostUrl}/api/comment/comments`, {
-    //     headers: {
-    //       "Access-Control-Expose-Headers": "uid",
-    //       uid: `${storyId}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log("res", res.data.comments);
-    //     setUserComments(res.data.comments);
-    //   })
-    //   .catch((err) => {
-    //     console.log("Something error happened at getComments", err);
-    //   });
-    // try {
-    //   const response = await fetch(
-    //     // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
-    //     `${hostUrl}/api/comment/comments`,
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         "Access-Control-Expose-Headers": "uid",
-    //         uid: `${storyId}`,
-    //       },
-    //     }
-    //   );
-    //   const respppp = await response.json();
-    //   console.log("respppp", respppp);
-    //   // const { generatedStory } = await response.json();
-    // } catch (error) {
-    //   console.log("error", error);
-    // }
-  };
-
   useEffect(() => {
-    getAuthorInfo();
-    getComments();
-  }, [storyId]);
+    getAuthorInfo(setAuthorName);
+    console.log(storyInfo);
+    // if (userComments.length == 0) {
+    //   getComments({ storyId, setUserComments });
+    // }
+  }, [storyInfo._id]);
 
   const handleChangeComment = (e) => {
     e.preventDefault();
@@ -128,13 +77,13 @@ const index = () => {
       })
       .then((res) => {
         console.log(res);
-        setInputComment("");
         router.push("/");
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   return (
     <>
       <Container
@@ -217,6 +166,13 @@ const index = () => {
                 >
                   Michel Michel
                 </h4>
+                {console.log("userComments", userComments)}
+                {/* {userComments.map((comment, index) => (
+                  <Typography>{comment}</Typography>
+                ))} */}
+                {/* {userComments.map((comment, index) => {
+                  return <p key={index}>{comment}</p>;
+                })} */}
                 {userComments.length == 0 ? (
                   <p style={{ textAlign: "left" }}>
                     "This story is very interesting! What a great brain the AI
