@@ -8,7 +8,7 @@ StoryPostsSort.propTypes = {
   options: PropTypes.array,
   onSort: PropTypes.func,
 };
-
+// TODO: Add Search function
 export default function StoryPostsSort({ options, onSort }) {
   return (
     <TextField select size="small" value="latest" onChange={onSort}>

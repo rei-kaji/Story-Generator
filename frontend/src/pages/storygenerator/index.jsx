@@ -291,8 +291,6 @@ const index = () => {
           )}
           <Box
             sx={{
-              // borderRadius: "5px",
-              // border: "1px solid lightgray",
               minWidth: "auto",
               display: "flex",
               alignItems: "center",

@@ -41,8 +41,6 @@ const index = () => {
   const [authorName, setAuthorName] = useState("");
   const [authorImage, setAuthorImage] = useState(avatar);
   const storyId = storyInfo._id;
-  // console.log("storyId", storyId);
-  // console.log("authorImage", authorImage);
 
   const getAuthorInfo = () => {
     let token = localStorage.getItem("token");
@@ -53,7 +51,6 @@ const index = () => {
         },
       })
       .then((res) => {
-        // console.log("res", res.data.user.fullName);
         setAuthorName(res.data.user.fullName);
       })
       .catch((err) => {
@@ -61,6 +58,7 @@ const index = () => {
       });
   };
 
+  // TODO:Create getComments function
   const getComments = async () => {
     // let token = localStorage.getItem("token");
     // // console.log("token", token);

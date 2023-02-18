@@ -3,7 +3,6 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import NextImage from "next/image";
 import PhotoSizeSelectActualOutlinedIcon from "@mui/icons-material/PhotoSizeSelectActualOutlined";
 import generateImage from "../pages/api/generateImage.js";
 const hostUrl = "https://story-generator.onrender.com";
@@ -81,10 +80,8 @@ const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
       alert("Please input!");
       return;
     }
-    console.log("Clicked generatingImage. imagePrompt: ", imagePrompt);
+    // console.log("Clicked generatingImage. imagePrompt: ", imagePrompt);
     try {
-      // setGeneratingImg(true);
-      // console.log(generatingImg);
       generateImage({
         setGeneratedImage,
         setGeneratingImg,

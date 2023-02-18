@@ -63,12 +63,8 @@ function Header() {
         },
       })
       .then((data) => {
-        // console.log("token", token);
-        // alert(`token: ${token}`);
-        // we need to save the token to localstorage
         localStorage.removeItem("token");
         router.push("/auth/login");
-        // we will redirect to the home page
       })
       .catch((err) => {
         console.log(err);
@@ -78,13 +74,8 @@ function Header() {
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <AppBar
-        position="static"
-        // style={{ color: "#e0f2f1", backgroundColor: "#004d40" }}
-        color="primary"
-      >
+      <AppBar position="static" color="primary">
         <Toolbar>
-          {/* <Image src={logo} alt="logo" /> */}
           <Typography
             variant="h6"
             noWrap

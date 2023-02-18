@@ -20,6 +20,7 @@ StoryPostsSearch.propTypes = {
   posts: PropTypes.array.isRequired,
 };
 
+// TODO: Add sort function
 export default function StoryPostsSearch({ posts }) {
   return (
     <Autocomplete

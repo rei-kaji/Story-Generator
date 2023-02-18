@@ -82,11 +82,6 @@ StoryPostCard.propTypes = {
   index: PropTypes.number,
 };
 
-// const query = {
-//   id: 1,
-//   name: "yakkun",
-// };
-
 export default function StoryPostCard({ post, index }) {
   const router = useRouter();
   const postedData = post;
@@ -95,40 +90,13 @@ export default function StoryPostCard({ post, index }) {
   const latestPostLarge = index === 0;
   const latestPost = index === 1 || index === 2;
 
-  // const getCommentCount = () => {
-  //   let token = localStorage.getItem("token");
-  //   axios
-  //     .get(`${hostUrl}/api/story/stories`, {
-  //       headers: {
-  //         Authorization: `${token}`,
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log("res", res.data.stories);
-  //       setStories(res.data.stories);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getCommentCount();
-  // }, []);
-
   const handleShowDetail = () => {
-    console.log("post", post);
+    // console.log("post", post);
     router.push({
       pathname: `/storydetail/${id}`,
       query: postedData,
     });
   };
-
-  // const POST_INFO = [
-  //   { number: 200, icon: "eva:message-circle-fill" },
-  //   // { number: view, icon: "eva:eye-fill" },
-  //   // { number: share, icon: "eva:share-fill" },
-  // ];
 
   return (
     <Grid
@@ -160,24 +128,6 @@ export default function StoryPostCard({ post, index }) {
             }),
           }}
         >
-          {/* <SvgColor
-            color="paper"
-            src="../../assets/icons/shape-avatar.svg"
-            // width={80}
-            // height={36}
-            // zIndex={9}
-            // bottom={-15}
-            // position={"absolute"}
-            sx={{
-              width: 80,
-              height: 36,
-              zIndex: 9,
-              bottom: -15,
-              position: "absolute",
-              color: "background.paper",
-              ...((latestPostLarge || latestPost) && { display: "none" }),
-            }}
-          /> */}
           <StyledAvatar
             alt={title}
             // src=
@@ -227,16 +177,7 @@ export default function StoryPostCard({ post, index }) {
             }}
             onClick={handleShowDetail}
           >
-            {/* <NextLink href={`/storydetail/${id}`}>{title}</NextLink> */}
-            {/* <Button onClick={handleShowDetail}>{title}</Button> */}
             {title}
-
-            {/* <NextLink
-              as={`storydetail`}
-              href={{ pathname: `/storydetail/${id}`, query: postedData }}
-            >
-              <p>Secondへ遷移する</p>
-            </NextLink> */}
           </StyledTitle>
 
           <StyledInfo>
@@ -250,19 +191,11 @@ export default function StoryPostCard({ post, index }) {
                 }),
               }}
             >
-              {/* <Iconify
-                  icon={info.icon}
-                  sx={{ width: 16, height: 16, mr: 0.5 }}
-                /> */}
-              {/* <Checkbox
-                  icon={<FavoriteBorder />}
-                  checkedIcon={<Favorite />}
-                  sx={{ width: 16, height: 16, mr: 0.5 }}
-                /> */}
               <ChatOutlinedIcon sx={{ width: 20, height: 20, mr: 0.5 }} />
               <Typography variant="caption">
                 {/* {fShortenNumber(info.number)} */}
                 {/* {commentCount} */}
+                20
               </Typography>
             </Box>
           </StyledInfo>

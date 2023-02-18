@@ -17,8 +17,6 @@ import {
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
 import axios from "axios";
-// components
-// import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +24,6 @@ const loginImage = require("../../assets/illustration_login.png");
 const hostUrl = "https://story-generator.onrender.com";
 
 const Login = () => {
-  // const navigate = useNavigate();
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [userPassword, setUserPassword] = useState("");
@@ -38,8 +35,6 @@ const Login = () => {
       email: userEmail,
       password: userPassword,
     };
-    // console.log("data", data);
-    // alert(`date: ${data.email}`);
 
     axios
       .post(`${hostUrl}/api/auth/login`, data)
