@@ -8,40 +8,39 @@ import {
   Stack,
   Typography,
   Box,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
   TextField,
-  Select,
-  MenuItem,
-  InputBase,
   Chip,
   Avatar,
   Paper,
-  Divider,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import axios from "axios";
-import { redirects } from "next.config";
 const hostUrl = "https://story-generator.onrender.com";
 
-const index = ({ post }) => {
+const index = () => {
   const router = useRouter();
 
   let avatar = require("../../../assets/images/avatars/avatar_1.jpg");
   avatar = avatar.default.src;
-  // const idD = router.query.id;
-  // console.log("router.query", router.query);
-  const { _id, title, genre, image, keyword, story, createdAt, user } =
-    router.query;
+  const storyInfo = {
+    _id: router.query._id,
+    title: router.query.title,
+    genre: router.query.genre,
+    image: router.query.image,
+    keyword: router.query.keyword,
+    story: router.query.story,
+    createdAt: router.query.createdAt,
+    user: router.query.user,
+  };
+
   const [userComments, setUserComments] = useState([]);
   const [inputComment, setInputComment] = useState();
   const [authorName, setAuthorName] = useState("");
   const [authorImage, setAuthorImage] = useState(avatar);
-  const storyId = router.query._id;
+  const storyId = storyInfo._id;
   // console.log("storyId", storyId);
   // console.log("authorImage", authorImage);
 
@@ -63,23 +62,23 @@ const index = ({ post }) => {
   };
 
   const getComments = async () => {
-    let token = localStorage.getItem("token");
-    // console.log("token", token);
-    let data = { storyId: _id };
-    axios
-      .get(`${hostUrl}/api/comment/comments`, {
-        headers: {
-          "Access-Control-Expose-Headers": "uid",
-          uid: `${storyId}`,
-        },
-      })
-      .then((res) => {
-        console.log("res", res.data.comments);
-        setUserComments(res.data.comments);
-      })
-      .catch((err) => {
-        console.log("Something error happened at getComments", err);
-      });
+    // let token = localStorage.getItem("token");
+    // // console.log("token", token);
+    // let data = { storyId: _id };
+    // axios
+    //   .get(`${hostUrl}/api/comment/comments`, {
+    //     headers: {
+    //       "Access-Control-Expose-Headers": "uid",
+    //       uid: `${storyId}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log("res", res.data.comments);
+    //     setUserComments(res.data.comments);
+    //   })
+    //   .catch((err) => {
+    //     console.log("Something error happened at getComments", err);
+    //   });
     // try {
     //   const response = await fetch(
     //     // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
@@ -93,7 +92,6 @@ const index = ({ post }) => {
     //       },
     //     }
     //   );
-
     //   const respppp = await response.json();
     //   console.log("respppp", respppp);
     //   // const { generatedStory } = await response.json();
@@ -159,7 +157,7 @@ const index = ({ post }) => {
               color: "inherit",
             }}
           >
-            {title}
+            {storyInfo.title}
           </Typography>
           <Box sx={{ display: "flex", justifyContent: "right" }}>
             <Chip
@@ -176,12 +174,12 @@ const index = ({ post }) => {
             component="img"
             alt="green iguana"
             sx={{ maxHeight: "100%" }}
-            image={image}
+            image={storyInfo.image}
           />
           <CardContent padding="1rem">
-            <Chip label={genre} sx={{ mb: 2 }} />
+            <Chip label={storyInfo.genre} sx={{ mb: 2 }} />
             <Typography variant="body2" color="text.secondary">
-              {story}
+              {storyInfo.story}
             </Typography>
           </CardContent>
         </Card>

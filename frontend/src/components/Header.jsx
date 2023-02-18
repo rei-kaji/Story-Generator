@@ -21,6 +21,9 @@ import NextLink from "next/link";
 import { red } from "@mui/material/colors";
 import muiTheme from "../styles/theme/theme";
 import { ThemeProvider } from "@mui/material/styles";
+import { useRouter } from "next/router";
+const hostUrl = "https://story-generator.onrender.com";
+import axios from "axios";
 
 // TODO:Change to get avatar image from userID or DB
 let icon = require("../assets/images/avatars/avatar_10.jpg");
@@ -31,6 +34,7 @@ const pageLinkes = { Home: "/", StoryGenerator: "/storygenerator" };
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function Header() {
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = useState();
   const [anchorElUser, setAnchorElUser] = useState();
 
@@ -46,6 +50,29 @@ function Header() {
   };
 
   const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    let token = localStorage.getItem("token");
+    axios
+      .post(`${hostUrl}/api/auth/logout`, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
+      .then((data) => {
+        // console.log("token", token);
+        // alert(`token: ${token}`);
+        // we need to save the token to localstorage
+        localStorage.removeItem("token");
+        router.push("/auth/login");
+        // we will redirect to the home page
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     setAnchorElUser(null);
   };
 
@@ -177,11 +204,9 @@ function Header() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem>
+                <Button onClick={handleLogout}>Logout</Button>
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
