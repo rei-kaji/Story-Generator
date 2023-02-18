@@ -100,9 +100,9 @@ const index = () => {
             }),
           }
         );
-        const { getGeneratedStory } = await response.json();
+        const { generatedStory } = await response.json();
         // console.log("generatedStory", generatedStory);
-        setGenerateStory(getGeneratedStory);
+        setGenerateStory(generatedStory);
         // console.log("generatedStory", generatedStory);
       } catch (err) {
         alert(err);
