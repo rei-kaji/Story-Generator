@@ -283,7 +283,7 @@ const index = () => {
                       justifyContent: "right",
                     }}
                   >
-                    {generateStory.length} / 1200
+                    {generateStory.length} / 2000
                   </Typography>
                 </Grid>
               )}
