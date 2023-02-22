@@ -108,7 +108,7 @@ const Register = () => {
           display: { xs: "none", md: "block" },
         }}
       >
-        <Image src={loginImage} width="100%" height="100%" />
+        <Image src={loginImage} width="100%" height="100%" alt="loginImage" />
       </Container>
       <Container
         style={{

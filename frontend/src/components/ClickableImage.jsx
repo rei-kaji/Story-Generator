@@ -39,7 +39,7 @@ const ImageSrc = styled("span")({
   backgroundPosition: "center 40%",
 });
 
-const Image = styled("span")(({ theme }) => ({
+const ImageStyled = styled("span")(({ theme }) => ({
   position: "absolute",
   left: 0,
   right: 0,
@@ -132,7 +132,7 @@ const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
               }}
             />
             <ImageBackdrop className="MuiImageBackdrop-root" />
-            <Image>
+            <ImageStyled>
               <Typography
                 component="span"
                 variant="h6"
@@ -147,7 +147,7 @@ const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
                 {image.title}
                 <ImageMarked className="MuiImageMarked-root" />
               </Typography>
-            </Image>
+            </ImageStyled>
           </ImageButton>
         )}
       </>

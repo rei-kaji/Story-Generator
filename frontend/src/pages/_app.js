@@ -8,7 +8,12 @@ import { HostUrlContextProvider } from "../contexts/hostUrlContext";
 
 export default function App({ Component, pageProps, router }) {
   useEffect(() => {
-    if (router.pathname === "/login") return; // pathnameが"/login"の場合には処理を行わない
+    console.log("router.pathname", router.pathname);
+    if (
+      router.pathname === "/auth/login" ||
+      router.pathname === "/auth/register"
+    )
+      return; // pathnameが"/login"の場合には処理を行わない
     // ここに全ページ共通で行う処理
     let token = localStorage.getItem("token");
     if (!token) {
