@@ -23,6 +23,11 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import ClickableImage from "@/components/ClickableImage";
+import generateStoryAPI from "../api/generateStoryAPI";
+// import { useHostUrl } from "@/contexts/hostUrlContext.js";
+// const hostUrl = useHostUrl();
+
+// console.log("hostUrl", hostUrl);
 
 const hostUrl = "https://story-generator.onrender.com";
 let previewImage = require("../../assets/images/preview.png");
@@ -83,27 +88,10 @@ const index = () => {
       // console.log("title", title);
       imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
       // console.log("imagePrompt", imagePrompt);
+      // TODO: Add loading image
       try {
         setGenerating(true);
-        const response = await fetch(
-          // `/api/generate-story?word1=${word1}&word2=${word2}&word3=${word3}`
-          `${hostUrl}/api/generate-story`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              title: title,
-              keyword: keyWord,
-              genre: genre,
-            }),
-          }
-        );
-        const { generatedStory } = await response.json();
-        // console.log("generatedStory", generatedStory);
-        setGenerateStory(generatedStory);
-        // console.log("generatedStory", generatedStory);
+        generateStoryAPI(title, keyWord, genre, setGenerateStory);
       } catch (err) {
         alert(err);
       } finally {

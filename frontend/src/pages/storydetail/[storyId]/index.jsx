@@ -20,6 +20,7 @@ import CardMedia from "@mui/material/CardMedia";
 import axios from "axios";
 import getComments from "../../api/getComments.js";
 import getAuthorInfo from "../../api/getAuthorInfo.js";
+import submitComment from "@/pages/api/submitComment.js";
 const hostUrl = "https://story-generator.onrender.com";
 
 const index = () => {
@@ -69,19 +70,8 @@ const index = () => {
       comment: inputComment,
       story: storyId,
     };
-    axios
-      .post(`${hostUrl}/api/comment/submit-comment`, data, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        router.push("/");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+
+    submitComment(hostUrl, token, data, router);
   };
 
   return (

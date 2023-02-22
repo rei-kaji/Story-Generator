@@ -23,6 +23,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
 import axios from "axios";
+import registerAPI from "../api/registerAPI";
 // components
 // import Iconify from "../../../components/iconify";
 
@@ -73,15 +74,7 @@ const Register = () => {
       password: userPassword,
       avatar: avatar,
     };
-    axios
-      .post(`${hostUrl}/api/auth/register`, data)
-      .then((res) => {
-        console.log(res);
-        router.push("auth/login");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    registerAPI(hostUrl, data, router);
   };
 
   // const handleChangeAvatar = (e) => {

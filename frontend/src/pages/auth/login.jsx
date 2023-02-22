@@ -16,12 +16,11 @@ import {
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
-import axios from "axios";
+import loginAPI from "../api/loginAPI";
 
 // ----------------------------------------------------------------------
 
 const loginImage = require("../../assets/illustration_login.png");
-const hostUrl = "https://story-generator.onrender.com";
 
 const Login = () => {
   const router = useRouter();
@@ -36,17 +35,7 @@ const Login = () => {
       password: userPassword,
     };
 
-    axios
-      .post(`${hostUrl}/api/auth/login`, data)
-      .then((data) => {
-        const { token } = data.data;
-        localStorage.setItem("token", token);
-        // we will redirect to the home page
-        router.push("/");
-      })
-      .catch((err) => {
-        console.log("Something error happened at login. ", err);
-      });
+    loginAPI(data, router);
   };
 
   const handleUserEmail = (e) => {
