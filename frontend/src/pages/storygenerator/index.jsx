@@ -146,8 +146,11 @@ const index = () => {
       <Container
         style={{
           marginTop: "2rem",
-          // backgroundColor: "#CEEC97",
-          padding: "1.5rem",
+          backgroundColor: "#DEF5E5",
+          borderRadius: "10px",
+          padding: "2rem",
+          textAlign: "center",
+          width: "50vw",
         }}
       >
         <Typography
@@ -197,9 +200,9 @@ const index = () => {
           >
             <TextField
               fullWidth
-              label="Key Word"
+              label="Keyword:  ex. Sunday, Fire works, etc..."
               id="keyword"
-              helperText="Input your story's keyword. ex. Sunday, Fire works, etc..."
+              // helperText="Input your story's keyword. ex. Sunday, Fire works, etc..."
               onChange={(e) => {
                 handleChangeKeyWord(e);
               }}
@@ -320,20 +323,20 @@ const index = () => {
             </>
           </Box>
         </Stack>
+        <Stack alignItems="center" justifyContent="space-between" mt={5}>
+          {uploading ? (
+            <>
+              <Loader />
+            </>
+          ) : (
+            <>
+              <Button variant="contained" onClick={handleShareStory}>
+                Share your story
+              </Button>
+            </>
+          )}
+        </Stack>
       </Container>
-      <Stack alignItems="center" justifyContent="space-between">
-        {uploading ? (
-          <>
-            <Loader />
-          </>
-        ) : (
-          <>
-            <Button variant="contained" onClick={handleShareStory}>
-              Share your story
-            </Button>
-          </>
-        )}
-      </Stack>
     </>
   );
 };

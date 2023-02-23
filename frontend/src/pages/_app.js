@@ -8,7 +8,6 @@ import { HostUrlContextProvider } from "../contexts/hostUrlContext";
 
 export default function App({ Component, pageProps, router }) {
   useEffect(() => {
-    console.log("router.pathname", router.pathname);
     if (
       router.pathname === "/auth/login" ||
       router.pathname === "/auth/register"
