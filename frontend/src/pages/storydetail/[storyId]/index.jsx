@@ -48,9 +48,9 @@ const index = () => {
   useEffect(() => {
     getAuthorInfo(setAuthorName);
     console.log(storyInfo);
-    // if (userComments.length == 0) {
-    //   getComments({ storyId, setUserComments });
-    // }
+    if (userComments.length == 0) {
+      getComments({ storyId, setUserComments });
+    }
   }, [storyInfo._id]);
 
   const handleChangeComment = (e) => {
@@ -96,6 +96,7 @@ const index = () => {
           >
             {storyInfo.title}
           </Typography>
+          {/* TODO: Fix the authorName to real author name from logined user */}
           <Box sx={{ display: "flex", justifyContent: "right" }}>
             <Chip
               sx={{ maxWidth: "25%" }}
@@ -141,46 +142,30 @@ const index = () => {
         </Box>
         <Stack direction="column">
           <h1>Comments</h1>
-          <Paper style={{ padding: "40px 20px" }}>
-            <Grid container wrap="nowrap" spacing={2}>
-              <Grid item>
-                <Avatar alt="Remy Sharp" src={avatar} />
-              </Grid>
-              <Grid justifyContent="left" item xs zeroMinWidth>
-                <h4
-                  style={{
-                    marginBottom: "1rem",
-                    marginTop: 0,
-                    textAlign: "left",
-                  }}
-                >
-                  Michel Michel
-                </h4>
-                {console.log("userComments", userComments)}
-                {/* {userComments.map((comment, index) => (
-                  <Typography>{comment}</Typography>
-                ))} */}
-                {/* {userComments.map((comment, index) => {
-                  return <p key={index}>{comment}</p>;
-                })} */}
-                {userComments.length == 0 ? (
-                  <p style={{ textAlign: "left" }}>
-                    "This story is very interesting! What a great brain the AI
-                    having!"
-                  </p>
-                ) : (
-                  <>
-                    {userComments.map((comment) => (
-                      <p style={{ textAlign: "left" }}>{comment}</p>
-                    ))}
-                    <p style={{ textAlign: "left", color: "gray" }}>
-                      posted 1 minute ago
-                    </p>
-                  </>
-                )}
-              </Grid>
-            </Grid>
-          </Paper>
+          {userComments.map((comment) => (
+            <>
+              <Paper style={{ padding: "40px 20px" }}>
+                <Grid container wrap="nowrap" spacing={2}>
+                  <Grid item>
+                    <Avatar alt="Remy Sharp" src={avatar} />
+                  </Grid>
+                  <Grid justifyContent="left" item xs zeroMinWidth>
+                    <h4
+                      key={comment.id}
+                      style={{
+                        marginBottom: "1rem",
+                        marginTop: 0,
+                        textAlign: "left",
+                      }}
+                    >
+                      {comment.user}
+                    </h4>
+                    <p key={comment.id}>{comment.comment}</p>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </>
+          ))}
         </Stack>
       </Container>
     </>

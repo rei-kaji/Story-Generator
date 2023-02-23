@@ -15,13 +15,13 @@ const getAllStories = (setStories, router, setLoading) => {
         alert("You have to login first!");
         router.push("/auth/login");
       }
+      setLoading(false);
       setStories(res.data.stories);
     })
     .catch((err) => {
       router.push("/auth/login");
       console.log(err);
     });
-  setLoading(false);
 };
 
 export default getAllStories;

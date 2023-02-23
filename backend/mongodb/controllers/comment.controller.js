@@ -4,6 +4,7 @@ export const getComments = async (req, res, next) => {
   const storyId = req.header("uid");
   try {
     let comments = await Comment.find({ story: storyId });
+    console.log("comments", comments);
 
     res.status(200).json({
       status: "success",

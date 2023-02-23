@@ -72,8 +72,12 @@ const ImageMarked = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
-  const [generatingImg, setGeneratingImg] = React.useState(false);
+const ClickableImage = ({
+  image,
+  setGeneratedImage,
+  setGeneratingImage,
+  imagePrompt,
+}) => {
   const startGenerateImage = (e) => {
     e.preventDefault();
     if (!imagePrompt) {
@@ -84,15 +88,12 @@ const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
     try {
       generateImage({
         setGeneratedImage,
-        setGeneratingImg,
+        setGeneratingImage,
         hostUrl,
         imagePrompt,
       });
     } catch (error) {
       console.log(error);
-      setGeneratingImg(false);
-    } finally {
-      setGeneratingImg(false);
     }
   };
   return (
@@ -104,53 +105,47 @@ const ClickableImage = ({ image, setGeneratedImage, imagePrompt }) => {
         width: "100%",
       }}
     >
-      <>
-        {generatingImg ? (
-          <Loader />
-        ) : (
-          <ImageButton
-            focusRipple
-            key={image.title}
-            style={{
-              width: image.width,
-              height: image.height,
+      <ImageButton
+        focusRipple
+        key={image.title}
+        style={{
+          width: image.width,
+          height: image.height,
+        }}
+        onClick={startGenerateImage}
+      >
+        <PhotoSizeSelectActualOutlinedIcon
+          sx={{
+            position: "center",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: "10rem",
+            height: "10rem",
+            backgroundSize: "cover",
+            backgroundPosition: "center 40%",
+            opacity: "0.3",
+          }}
+        />
+        <ImageBackdrop className="MuiImageBackdrop-root" />
+        <ImageStyled>
+          <Typography
+            component="span"
+            variant="h6"
+            color="#00695c"
+            sx={{
+              position: "relative",
+              p: 4,
+              pt: 2,
+              pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
             }}
-            onClick={startGenerateImage}
           >
-            <PhotoSizeSelectActualOutlinedIcon
-              sx={{
-                position: "center",
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
-                width: "10rem",
-                height: "10rem",
-                backgroundSize: "cover",
-                backgroundPosition: "center 40%",
-                opacity: "0.3",
-              }}
-            />
-            <ImageBackdrop className="MuiImageBackdrop-root" />
-            <ImageStyled>
-              <Typography
-                component="span"
-                variant="h6"
-                color="#00695c"
-                sx={{
-                  position: "relative",
-                  p: 4,
-                  pt: 2,
-                  pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
-                }}
-              >
-                {image.title}
-                <ImageMarked className="MuiImageMarked-root" />
-              </Typography>
-            </ImageStyled>
-          </ImageButton>
-        )}
-      </>
+            {image.title}
+            <ImageMarked className="MuiImageMarked-root" />
+          </Typography>
+        </ImageStyled>
+      </ImageButton>
     </Box>
   );
 };

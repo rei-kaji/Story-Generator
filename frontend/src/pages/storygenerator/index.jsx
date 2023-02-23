@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import ClickableImage from "@/components/ClickableImage";
 import generateStoryAPI from "../api/generateStoryAPI";
+import Loader from "@/components/Loader";
 // import { useHostUrl } from "@/contexts/hostUrlContext.js";
 // const hostUrl = useHostUrl();
 
@@ -59,11 +60,9 @@ const index = () => {
     "Generated story will be here."
   );
   const [generatedImage, setGeneratedImage] = useState("");
-  // console.log("generatedImage", generatedImage);
-  const [coverImage, setCoverImage] = useState(
-    "https://images.unsplash.com/photo-1525220964737-6c299398493c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-  );
+  const [uploading, setUploading] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [generatingImage, setGeneratingImage] = useState(false);
 
   const handleChangeTitle = (e) => {
     e.preventDefault();
@@ -82,6 +81,10 @@ const index = () => {
     imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
   }, [genre, title, keyWord]);
 
+  useEffect(() => {
+    console.log("generatingImage", generatingImage);
+  }, [generatingImage]);
+
   const generatingStory = async (event) => {
     if (title && genre && keyWord) {
       event.preventDefault();
@@ -90,12 +93,15 @@ const index = () => {
       // console.log("imagePrompt", imagePrompt);
       // TODO: Add loading image
       try {
-        setGenerating(true);
-        generateStoryAPI(title, keyWord, genre, setGenerateStory);
+        generateStoryAPI(
+          title,
+          keyWord,
+          genre,
+          setGenerateStory,
+          setGenerating
+        );
       } catch (err) {
         alert(err);
-      } finally {
-        setGenerating(false);
       }
     } else {
       alert("Please all of input.");
@@ -118,6 +124,7 @@ const index = () => {
       story: generateStory,
       image: generatedImage,
     };
+    setUploading(true);
     axios
       .post(`${hostUrl}/api/story/upload`, data, {
         headers: {
@@ -125,10 +132,11 @@ const index = () => {
         },
       })
       .then((res) => {
-        console.log(res);
-        router.push("/");
+        router.replace("/");
+        setUploading(false);
       })
       .catch((err) => {
+        setUploading(false);
         console.log(err);
       });
   };
@@ -285,30 +293,46 @@ const index = () => {
             }}
           >
             <>
-              {generatedImage.length < 5 ? (
-                <ClickableImage
-                  image={imageButton}
-                  // setGeneratingImg={setGeneratingImg}
-                  setGeneratedImage={setGeneratedImage}
-                  imagePrompt={imagePrompt}
-                />
+              {generatingImage ? (
+                <>
+                  <Loader />
+                </>
               ) : (
-                <Image
-                  src={generatedImage}
-                  alt="preview"
-                  width="500"
-                  height="500"
-                  className="w-9/12 h-9/12 origin-contain"
-                />
+                <>
+                  {generatedImage.length < 5 ? (
+                    <ClickableImage
+                      image={imageButton}
+                      setGeneratedImage={setGeneratedImage}
+                      setGeneratingImage={setGeneratingImage}
+                      imagePrompt={imagePrompt}
+                    />
+                  ) : (
+                    <Image
+                      src={generatedImage}
+                      alt="preview"
+                      width="500"
+                      height="500"
+                      className="w-9/12 h-9/12 origin-contain"
+                    />
+                  )}
+                </>
               )}
             </>
           </Box>
         </Stack>
       </Container>
       <Stack alignItems="center" justifyContent="space-between">
-        <Button variant="contained" onClick={handleShareStory}>
-          Share your story
-        </Button>
+        {uploading ? (
+          <>
+            <Loader />
+          </>
+        ) : (
+          <>
+            <Button variant="contained" onClick={handleShareStory}>
+              Share your story
+            </Button>
+          </>
+        )}
       </Stack>
     </>
   );

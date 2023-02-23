@@ -1,3 +1,6 @@
+import axios from "axios";
+// const hostUrl = "https://story-generator.onrender.com";
+
 const submitComment = (hostUrl, token, data, router) => {
   axios
     .post(`${hostUrl}/api/comment/submit-comment`, data, {
