@@ -4,7 +4,7 @@ const generateImage = async ({
   hostUrl,
   imagePrompt,
 }) => {
-  console.log("Start generateImage", imagePrompt);
+  console.debug("Start generateImage", imagePrompt);
 
   setGeneratingImage(true);
   try {

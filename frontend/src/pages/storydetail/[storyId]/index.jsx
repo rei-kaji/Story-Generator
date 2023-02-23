@@ -47,7 +47,7 @@ const index = () => {
 
   useEffect(() => {
     getAuthorInfo(setAuthorName);
-    console.log(storyInfo);
+    // console.log(storyInfo);
     if (userComments.length == 0) {
       getComments({ storyId, setUserComments });
     }

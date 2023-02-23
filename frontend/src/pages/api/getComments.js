@@ -13,7 +13,7 @@ const getComments = async ({ storyId, setUserComments }) => {
       },
     })
     .then((res) => {
-      console.log("res", res.data.comments);
+      // console.log("res", res.data.comments);
       setUserComments(res.data.comments);
     })
     .catch((err) => {

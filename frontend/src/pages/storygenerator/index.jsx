@@ -116,7 +116,7 @@ const index = () => {
     }
 
     let token = localStorage.getItem("token");
-    console.log(token);
+    // console.log(token);
     let data = {
       title: title,
       genre: genre,

@@ -32,7 +32,7 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    console.log("loading", loading);
+    // console.log("loading", loading);
     getAllStories(setStories, router, setLoading);
   }, []);
 

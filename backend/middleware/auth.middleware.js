@@ -6,7 +6,7 @@ dotenv.config();
 const auth = async (req, res, next) => {
   const token = req.header("authorization");
 
-  console.log("token", token);
+  // console.log("token", token);
   try {
     const decoded = verifyToken(token);
 
