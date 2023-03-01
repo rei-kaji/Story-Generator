@@ -176,6 +176,7 @@ function Header() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                {/* TODO: Fix to get icon from DB */}
                 <Avatar alt="Avatar" src={icon} />
               </IconButton>
             </Tooltip>

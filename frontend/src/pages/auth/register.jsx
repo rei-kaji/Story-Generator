@@ -77,6 +77,8 @@ const Register = () => {
     registerAPI(hostUrl, data, router);
   };
 
+  // TODO: Add avatar select function
+
   // const handleChangeAvatar = (e) => {
   //   e.preventDefault;
   //   setAvatar(e.target.value);
