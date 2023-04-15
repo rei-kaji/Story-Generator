@@ -21,6 +21,7 @@ import axios from "axios";
 import getComments from "../../api/getComments.js";
 import getAuthorInfo from "../../api/getAuthorInfo.js";
 import submitComment from "@/pages/api/submitComment.js";
+import Header from "@/components/Header.jsx";
 const hostUrl = "https://story-generator.onrender.com";
 
 const index = () => {
@@ -76,6 +77,7 @@ const index = () => {
 
   return (
     <>
+      <Header />
       <Container
         style={{
           marginTop: "2rem",

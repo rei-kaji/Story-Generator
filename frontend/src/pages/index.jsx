@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/router.js";
 import getAllStories from "./api/getAllStories.js";
 import Loader from "@/components/Loader/index.jsx";
+import Header from "@/components/Header.jsx";
 // import { useHostUrl } from "@/contexts/hostUrlContext.js";
 // const hostUrl = useHostUrl();
 
@@ -43,6 +44,7 @@ const Home = () => {
 
   return (
     <>
+      <Header />
       <main>
         <Container style={{ marginTop: "2rem" }}>
           <Fab

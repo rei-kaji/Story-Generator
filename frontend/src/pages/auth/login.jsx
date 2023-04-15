@@ -17,6 +17,7 @@ import {
 import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
 import loginAPI from "../api/loginAPI";
+import Header from "@/components/Header";
 
 // ----------------------------------------------------------------------
 
@@ -47,81 +48,84 @@ const Login = () => {
     setUserPassword(e.target.value);
   };
   return (
-    <Container
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        marginTop: "2rem",
-        padding: "1.5rem",
-      }}
-    >
+    <>
+      <Header props={true} />
       <Container
         sx={{
-          display: { xs: "none", md: "block" },
-        }}
-      >
-        <Image src={loginImage} width="100%" height="100%" alt="logo" />
-      </Container>
-      <Container
-        style={{
+          display: "flex",
+          flexDirection: "row",
           marginTop: "2rem",
-          // // backgroundColor: "#CEEC97",
-          // padding: "1.5rem",
+          padding: "1.5rem",
         }}
       >
-        <Typography variant="h4" mb={2}>
-          Enjoy your story journey!
-        </Typography>
-        <Stack spacing={3} mb={2}>
-          <TextField
-            name="email"
-            label="Email address"
-            onChange={handleUserEmail}
-          />
+        <Container
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          <Image src={loginImage} width="100%" height="100%" alt="logo" />
+        </Container>
+        <Container
+          style={{
+            marginTop: "2rem",
+            // // backgroundColor: "#CEEC97",
+            // padding: "1.5rem",
+          }}
+        >
+          <Typography variant="h4" mb={2}>
+            Enjoy your story journey!
+          </Typography>
+          <Stack spacing={3} mb={2}>
+            <TextField
+              name="email"
+              label="Email address"
+              onChange={handleUserEmail}
+            />
 
-          <TextField
-            name="password"
-            label="Password"
-            onChange={handleUserPassword}
-            type={showPassword ? "text" : "password"}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {/* <Iconify
+            <TextField
+              name="password"
+              label="Password"
+              onChange={handleUserPassword}
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {/* <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
                   /> */}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={handleClick}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={handleClick}
+            >
+              Login
+            </LoadingButton>
+          </Stack>
+          <Typography
+            variant="body2"
+            sx={{ display: "flex", justifyContent: "right" }}
           >
-            Login
-          </LoadingButton>
-        </Stack>
-        <Typography
-          variant="body2"
-          sx={{ display: "flex", justifyContent: "right" }}
-        >
-          Don’t have an account?
-          <Link ml={1}>
-            <NextLink variant="subtitle2" href={"register"}>
-              Register
-            </NextLink>
-          </Link>
-        </Typography>
+            Don’t have an account?
+            <Link ml={1}>
+              <NextLink variant="subtitle2" href={"register"}>
+                Register
+              </NextLink>
+            </Link>
+          </Typography>
+        </Container>
       </Container>
-    </Container>
+    </>
   );
 };
 

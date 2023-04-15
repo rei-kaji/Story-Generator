@@ -149,6 +149,7 @@ const Index = () => {
 
   return (
     <>
+      <Header />
       <Container
         style={{
           marginTop: "2rem",
