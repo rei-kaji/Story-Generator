@@ -51,7 +51,7 @@ const genres = [
   "Horror",
 ];
 let imagePrompt;
-const index = () => {
+const Index = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [genre, setGenre] = useState("");
@@ -77,6 +77,12 @@ const index = () => {
     setGenre(e.target.value);
   };
 
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/login");
+    }
+  }, []);
   useEffect(() => {
     imagePrompt = `Please create image following these condition. Title is ${title}. Keyword is ${keyWord}. Genre is ${genre}.`;
   }, [genre, title, keyWord]);
@@ -341,4 +347,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

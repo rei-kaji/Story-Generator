@@ -2,23 +2,23 @@ import Layout from "../components/Layout";
 import "../styles/destroy.css";
 import { ThemeProvider } from "@mui/material/styles";
 import muiTheme from "../styles/theme/theme";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Head from "next/head";
 import { HostUrlContextProvider } from "../contexts/hostUrlContext";
 
 export default function App({ Component, pageProps, router }) {
-  useEffect(() => {
-    if (
-      router.pathname === "/auth/login" ||
-      router.pathname === "/auth/register"
-    )
-      return; // pathnameが"/login"の場合には処理を行わない
-    // ここに全ページ共通で行う処理
-    let token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/auth/login");
-    }
-  }, [router.pathname]);
+  // useEffect(() => {
+  //   if (
+  //     router.pathname === "/auth/login" ||
+  //     router.pathname === "/auth/register"
+  //   )
+  //     return; // pathnameが"/login"の場合には処理を行わない
+  //   // ここに全ページ共通で行う処理
+  //   let token = localStorage.getItem("token");
+  //   if (!token) {
+  //     router.push("/auth/login");
+  //   }
+  // }, [router.pathname]);
   return (
     <>
       <ThemeProvider theme={muiTheme}>

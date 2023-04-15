@@ -6,7 +6,7 @@ const registerAPI = (hostUrl, data, router) => {
     .post(`${hostUrl}/api/auth/register`, data)
     .then((res) => {
       console.log(res);
-      router.push("auth/login");
+      router.push("login");
     })
     .catch((err) => {
       console.log(err);

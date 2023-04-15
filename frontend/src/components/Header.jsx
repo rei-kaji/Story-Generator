@@ -174,13 +174,12 @@ function Header() {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* TODO: Fix to get icon from DB */}
                 <Avatar alt="Avatar" src={icon} />
               </IconButton>
             </Tooltip>
-            <Menu
+            {/* <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
@@ -199,7 +198,7 @@ function Header() {
               <MenuItem>
                 <Button onClick={handleLogout}>Logout</Button>
               </MenuItem>
-            </Menu>
+            </Menu> */}
           </Box>
         </Toolbar>
       </AppBar>
