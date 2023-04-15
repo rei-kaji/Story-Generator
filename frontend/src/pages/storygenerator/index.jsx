@@ -25,6 +25,7 @@ import Image from "next/image";
 import ClickableImage from "@/components/ClickableImage";
 import generateStoryAPI from "../api/generateStoryAPI";
 import Loader from "@/components/Loader";
+import Header from "@/components/Header";
 // import { useHostUrl } from "@/contexts/hostUrlContext.js";
 // const hostUrl = useHostUrl();
 
