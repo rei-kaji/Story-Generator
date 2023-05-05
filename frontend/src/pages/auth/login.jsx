@@ -36,7 +36,11 @@ const Login = () => {
       password: userPassword,
     };
 
-    loginAPI(data, router);
+    try {
+      loginAPI(data, router);
+    } catch (error) {
+      alert("Something went wrong! Please try again.");
+    }
   };
 
   const handleUserEmail = (e) => {
@@ -75,16 +79,22 @@ const Login = () => {
           <Typography variant="h4" mb={2}>
             Enjoy your story journey!
           </Typography>
+
           <Stack spacing={3} mb={2}>
+            <Typography variant="body1" color="initial">
+              If you are a trial user, please press the login button as it is.
+            </Typography>
             <TextField
               name="email"
               label="Email address"
               onChange={handleUserEmail}
+              value={"test@gmail.com"}
             />
 
             <TextField
               name="password"
               label="Password"
+              value={"12345"}
               onChange={handleUserPassword}
               type={showPassword ? "text" : "password"}
               InputProps={{
