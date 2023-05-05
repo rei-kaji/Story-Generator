@@ -18,6 +18,7 @@ import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
 import loginAPI from "../api/loginAPI";
 import Header from "@/components/Header";
+import Loader from "@/components/Loader";
 
 // ----------------------------------------------------------------------
 
@@ -29,8 +30,11 @@ const Login = () => {
   const [userPassword, setUserPassword] = useState("");
   const [userEmail, setUserEmail] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const handleClick = (e) => {
     e.preventDefault();
+    setLoading(true);
     let data = {
       email: userEmail,
       password: userPassword,
@@ -40,6 +44,8 @@ const Login = () => {
       loginAPI(data, router);
     } catch (error) {
       alert("Something went wrong! Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,87 +60,94 @@ const Login = () => {
   return (
     <>
       <Header props={true} />
-      <Container
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          marginTop: "2rem",
-          padding: "1.5rem",
-        }}
-      >
+      {loading ? (
+        <Loader />
+      ) : (
         <Container
           sx={{
-            display: { xs: "none", md: "block" },
-          }}
-        >
-          <Image src={loginImage} width="100%" height="100%" alt="logo" />
-        </Container>
-        <Container
-          style={{
+            display: "flex",
+            flexDirection: "row",
             marginTop: "2rem",
-            // // backgroundColor: "#CEEC97",
-            // padding: "1.5rem",
+            padding: "1.5rem",
           }}
         >
-          <Typography variant="h4" mb={2}>
-            Enjoy your story journey!
-          </Typography>
-
-          <Stack spacing={3} mb={2}>
-            <Typography variant="body1" color="initial">
-              If you are a trial user, please press the login button as it is.
+          <Container
+            sx={{
+              display: { xs: "none", md: "block" },
+            }}
+          >
+            <Image src={loginImage} width="100%" height="100%" alt="logo" />
+          </Container>
+          <Container
+            style={{
+              marginTop: "2rem",
+              // // backgroundColor: "#CEEC97",
+              // padding: "1.5rem",
+            }}
+          >
+            <Typography variant="h4" mb={2}>
+              Enjoy your story journey!
             </Typography>
-            <TextField
-              name="email"
-              label="Email address"
-              onChange={handleUserEmail}
-              value={"test@gmail.com"}
-            />
 
-            <TextField
-              name="password"
-              label="Password"
-              value={"12345"}
-              onChange={handleUserPassword}
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => setShowPassword(!showPassword)}
-                      edge="end"
-                    >
-                      {/* <Iconify
+            <Stack spacing={3} mb={2}>
+              <Typography variant="body1" color="GrayText">
+                Please use the following email and password for trial.
+                <br />
+                <span>
+                  email: trial@gmail.com <br />
+                  password: 12345
+                </span>
+              </Typography>
+              <TextField
+                name="email"
+                label="Email address"
+                onChange={handleUserEmail}
+              />
+
+              <TextField
+                name="password"
+                label="Password"
+                onChange={handleUserPassword}
+                type={showPassword ? "text" : "password"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {/* <Iconify
                     icon={showPassword ? "eva:eye-fill" : "eva:eye-off-fill"}
                   /> */}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <LoadingButton
-              fullWidth
-              size="large"
-              type="submit"
-              variant="contained"
-              onClick={handleClick}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <LoadingButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                onClick={handleClick}
+              >
+                Login
+              </LoadingButton>
+            </Stack>
+            <Typography
+              variant="body2"
+              sx={{ display: "flex", justifyContent: "right" }}
             >
-              Login
-            </LoadingButton>
-          </Stack>
-          <Typography
-            variant="body2"
-            sx={{ display: "flex", justifyContent: "right" }}
-          >
-            Don’t have an account?
-            <Link ml={1}>
-              <NextLink variant="subtitle2" href={"register"}>
-                Register
-              </NextLink>
-            </Link>
-          </Typography>
+              Don’t have an account?
+              <Link ml={1}>
+                <NextLink variant="subtitle2" href={"register"}>
+                  Register
+                </NextLink>
+              </Link>
+            </Typography>
+          </Container>
         </Container>
-      </Container>
+      )}
     </>
   );
 };
